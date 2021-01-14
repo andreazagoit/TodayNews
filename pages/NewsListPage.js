@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, StyleSheet, RefreshControl} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, StyleSheet, RefreshControl, ToastAndroid} from 'react-native';
 import axios from 'axios';
 import CardNews from '../components/CardNews';
 import API_KEY from '../API_KEY';
@@ -28,15 +28,12 @@ const NewsListPage = ({route}) => {
         }
       })
       .catch(function (error) {
-        // handle error
-        console.log(error);
+        if (category == 'general') {
+          ToastAndroid.show('Impossibile ottenere i dati', ToastAndroid.SHORT);
+        }
+        setRefreshing(false);
       });
   };
-
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    getAPIData();
-  }, [refreshing]);
 
   return (
     <FlatList
@@ -54,7 +51,13 @@ const NewsListPage = ({route}) => {
       keyExtractor={(item) => item.url}
       contentContainerStyle={styles.container}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => {
+            setRefreshing(true);
+            getAPIData();
+          }}
+        />
       }
     />
   );
