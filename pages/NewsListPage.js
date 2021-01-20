@@ -71,6 +71,7 @@ const NewsListPage = ({route}) => {
             paddingHorizontal: 40,
             paddingVertical: 16,
             borderRadius: 5,
+            marginBottom: 10,
           }}>
           <Text style={{fontWeight: 'bold', fontSize: 16}}>Ricarica</Text>
         </TouchableOpacity>
